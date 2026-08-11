@@ -13,7 +13,7 @@ COPY packages/shared packages/shared
 COPY docs/schema.sqlite.sql docs/schema.sqlite.sql
 
 RUN npm run build --workspace apps/api
-RUN ls -la apps/api/dist && test -f apps/api/dist/index.js
+RUN test -f apps/api/dist/apps/api/src/index.js
 RUN mkdir -p /data
 
 ENV PORT=8080
@@ -27,4 +27,4 @@ ENV NODE_ENV=production
 
 EXPOSE 8080
 
-CMD ["node", "apps/api/dist/index.js"]
+CMD ["node", "apps/api/dist/apps/api/src/index.js"]
