@@ -27,4 +27,4 @@ ENV NODE_ENV=production
 
 EXPOSE 8080
 
-CMD ["npm", "start", "--workspace", "apps/api"]
+CMD ["node", "apps/api/dist/index.js"]
