@@ -1,0 +1,19 @@
+{
+  "name": "clinic-queue",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm --workspace apps/api run dev",
+    "dev:web": "npm --workspace apps/web run dev",
+    "dev:display": "npm --workspace apps/display run dev",
+    "dev:all": "npm run dev:api & npm run dev:web & npm run dev:display",
+    "seed": "tsx scripts/seed.ts",
+    "lint": "echo 'add lint later'"
+  },
+  "devDependencies": {
+    "tsx": "^4.16.2"
+  }
+}

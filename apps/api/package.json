@@ -1,0 +1,21 @@
+{
+  "name": "@clinic-queue/api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.1.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "ws": "^8.17.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.16.2",
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,0 +1,237 @@
+openapi: 3.0.3
+info:
+  title: Clinic Queue Call System API
+  version: 1.0.0
+servers:
+  - url: /api
+
+paths:
+  /rooms:
+    get:
+      summary: Get list of doctor's rooms
+      responses:
+        "200":
+          description: OK
+
+  /rooms/{roomId}/presence:
+    post:
+      summary: Update doctor's room availability/status
+      parameters:
+        - in: path
+          name: roomId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                presence:
+                  type: string
+                  enum: [AVAILABLE, AWAY]
+                note:
+                  type: string
+      responses:
+        "200":
+          description: OK
+
+  /tickets:
+    get:
+      summary: Get waiting ticket list
+      parameters:
+        - in: query
+          name: roomId
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: status
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+
+    post:
+      summary: Register patient and create waiting ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [clinicId, roomId, maskedName]
+              properties:
+                clinicId:
+                  type: string
+                  format: uuid
+                roomId:
+                  type: string
+                  format: uuid
+                maskedName:
+                  type: string
+                  example: "Hong*Dong"
+                fullName:
+                  type: string
+                  example: "Hong Gil Dong"
+                memoPrivate:
+                  type: string
+                  example: "First visit, allergy"
+                priority:
+                  type: integer
+                  default: 0
+      responses:
+        "201":
+          description: Created
+
+  /tickets/{ticketId}:
+    patch:
+      summary: Update waiting ticket (memo, priority, etc.)
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                memoPrivate:
+                  type: string
+                priority:
+                  type: integer
+      responses:
+        "200":
+          description: OK
+
+  /tickets/{ticketId}/call:
+    post:
+      summary: Call a patient (next or specific waiting patient)
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mode:
+                  type: string
+                  enum: [NORMAL, RECALL]
+                  default: NORMAL
+      responses:
+        "200":
+          description: OK
+
+  /tickets/{ticketId}/hold:
+    post:
+      summary: Put patient on hold
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+
+  /tickets/{ticketId}/resume:
+    post:
+      summary: Resume patient from hold
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+
+  /tickets/{ticketId}/done:
+    post:
+      summary: Mark patient as completed
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+
+  /tickets/{ticketId}/cancel:
+    post:
+      summary: Cancel patient registration
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+
+  /settings/{clinicId}:
+    get:
+      summary: Get clinic settings (announcements/theme)
+      parameters:
+        - in: path
+          name: clinicId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+
+    patch:
+      summary: Update clinic settings (customize announcement message, etc.)
+      parameters:
+        - in: path
+          name: clinicId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ttsEnabled:
+                  type: boolean
+                ttsTemplate:
+                  type: string
+                  example: "{name}, please proceed to {room}"
+                displayTheme:
+                  type: object
+      responses:
+        "200":
+          description: OK
+
