@@ -21,10 +21,13 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/:roomId', async (req: Request, res: Response) => {
   try {
-    const room = await RoomService.findById(req.params.roomId);
+    const roomId = String(req.params.roomId);
+    const room = await RoomService.findById(roomId);
+
     if (!room) {
       return res.status(404).json({ error: 'Room not found' });
     }
+
     res.json(room);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
@@ -33,15 +36,21 @@ router.get('/:roomId', async (req: Request, res: Response) => {
 
 router.post('/:roomId/presence', async (req: Request, res: Response) => {
   try {
+    const roomId = String(req.params.roomId);
     const data = UpdateRoomPresence.parse(req.body);
-    const room = await RoomService.updatePresence(req.params.roomId, data);
+    const room = await RoomService.updatePresence(roomId, data);
 
     if (!room) {
       return res.status(404).json({ error: 'Room not found' });
     }
 
     const { getWSService } = require('../ws/ws.service');
-    getWSService().notifyRoomPresenceUpdated(room.id, room.clinicId, data.presence, data.note || null);
+    getWSService().notifyRoomPresenceUpdated(
+      room.id,
+      room.clinicId,
+      data.presence,
+      data.note || null
+    );
 
     res.json(room);
   } catch (error: any) {

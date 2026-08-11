@@ -35,7 +35,7 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/:ticketId', async (req: Request, res: Response) => {
   try {
-    const ticket = await TicketService.findById(req.params.ticketId);
+    const ticket = await TicketService.findById(String(req.params.ticketId));
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket not found' });
     }
@@ -48,7 +48,7 @@ router.get('/:ticketId', async (req: Request, res: Response) => {
 router.patch('/:ticketId', async (req: Request, res: Response) => {
   try {
     const data = UpdateTicket.parse(req.body);
-    const ticket = await TicketService.update(req.params.ticketId, data);
+    const ticket = await TicketService.update(String(req.params.ticketId), data);
 
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket not found' });
@@ -63,7 +63,7 @@ router.patch('/:ticketId', async (req: Request, res: Response) => {
 router.post('/:ticketId/call', async (req: Request, res: Response) => {
   try {
     const data = CallTicket.parse(req.body);
-    const ticket = await TicketService.call(req.params.ticketId, data);
+    const ticket = await TicketService.call(String(req.params.ticketId), data);
 
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket not found' });
@@ -80,7 +80,7 @@ router.post('/:ticketId/call', async (req: Request, res: Response) => {
 
 router.post('/:ticketId/hold', async (req: Request, res: Response) => {
   try {
-    const ticket = await TicketService.hold(req.params.ticketId);
+    const ticket = await TicketService.hold(String(req.params.ticketId));
 
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket not found' });
@@ -94,7 +94,7 @@ router.post('/:ticketId/hold', async (req: Request, res: Response) => {
 
 router.post('/:ticketId/resume', async (req: Request, res: Response) => {
   try {
-    const ticket = await TicketService.resume(req.params.ticketId);
+    const ticket = await TicketService.resume(String(req.params.ticketId));
 
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket not found' });
@@ -108,7 +108,7 @@ router.post('/:ticketId/resume', async (req: Request, res: Response) => {
 
 router.post('/:ticketId/done', async (req: Request, res: Response) => {
   try {
-    const ticket = await TicketService.done(req.params.ticketId);
+    const ticket = await TicketService.done(String(req.params.ticketId));
 
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket not found' });
@@ -122,7 +122,7 @@ router.post('/:ticketId/done', async (req: Request, res: Response) => {
 
 router.post('/:ticketId/cancel', async (req: Request, res: Response) => {
   try {
-    const ticket = await TicketService.cancel(req.params.ticketId);
+    const ticket = await TicketService.cancel(String(req.params.ticketId));
 
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket not found' });

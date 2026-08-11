@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/:clinicId', async (req: Request, res: Response) => {
   try {
-    const settings = await SettingsService.findByClinicId(req.params.clinicId);
+    const settings = await SettingsService.findByClinicId(String(req.params.clinicId));
     if (!settings) {
       return res.status(404).json({ error: 'Settings not found' });
     }
@@ -19,7 +19,7 @@ router.get('/:clinicId', async (req: Request, res: Response) => {
 router.patch('/:clinicId', async (req: Request, res: Response) => {
   try {
     const data = UpdateSettings.parse(req.body);
-    const settings = await SettingsService.update(req.params.clinicId, data);
+    const settings = await SettingsService.update(String(req.params.clinicId), data);
 
     if (!settings) {
       return res.status(404).json({ error: 'Settings not found' });

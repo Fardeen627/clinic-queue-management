@@ -593,7 +593,7 @@ app.delete("/api/media/items/:mediaId", (req, res) => {
     res.status(404).json({ error: "media not found" });
     return;
   }
-  const clinicId = row.clinic_id;
+  const clinicId = (row as { clinic_id: string }).clinic_id;
   db.prepare("DELETE FROM media_playlist_items WHERE media_id = ?").run(mediaId);
   db.prepare("DELETE FROM media_items WHERE id = ?").run(mediaId);
   const items = getPlaylistItems(clinicId, null);
