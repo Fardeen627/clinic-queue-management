@@ -19,6 +19,7 @@ COPY tsconfig*.json ./
 
 RUN npm run build --workspace=apps/api
 RUN test -f apps/api/dist/apps/api/src/index.js
+RUN mkdir -p /data
 
 EXPOSE 8080
 
