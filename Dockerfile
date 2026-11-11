@@ -23,4 +23,6 @@ RUN mkdir -p /data
 
 EXPOSE 8080
 
+ENV DATABASE_PATH=/data/clinic-queue.sqlite
+
 CMD ["node", "apps/api/dist/apps/api/src/index.js"]
