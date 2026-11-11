@@ -6,6 +6,8 @@ RUN apk add --no-cache python3 make g++
 
 COPY package.json package-lock.json* ./
 COPY apps/api/package.json ./apps/api/
+COPY apps/web/package.json ./apps/web/
+COPY apps/display/package.json ./apps/display/
 COPY packages/shared/package.json ./packages/shared/
 
 RUN npm ci --workspace=apps/api --workspace=packages/shared --include-workspace-root
