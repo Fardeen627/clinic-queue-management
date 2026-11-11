@@ -2,7 +2,7 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache python3 make g++
+RUN apk add --no-cache python3 make g++ sqlite
 
 COPY package.json package-lock.json* ./
 COPY apps/api/package.json ./apps/api/
@@ -25,4 +25,4 @@ EXPOSE 8080
 
 ENV DATABASE_PATH=/data/clinic-queue.sqlite
 
-CMD ["node", "apps/api/dist/apps/api/src/index.js"]
+CMD sh -c "sqlite3 /data/clinic-queue.sqlite < docs/schema.sqlite.sql && node apps/api/dist/apps/api/src/index.js"
