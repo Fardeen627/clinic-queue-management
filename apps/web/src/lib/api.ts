@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://clinic-queue-management-1-m8e8.onrender.com';
 
 function getAuthToken() {
   if (typeof window === 'undefined') return null;
