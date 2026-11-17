@@ -7,7 +7,22 @@ import { openDb } from "./db/sqlite.js";
 import { attachBroker, broadcastToClinic, broadcastToRoom } from "./ws/broker.js";
 
 const app = express();
-app.use(cors({ origin: process.env.CORS_ORIGIN || true }));
+// CORS: allow any https://*.vercel.app (web + display deployments, incl. preview URLs) and localhost for dev.
+// Extra origins: CORS_ORIGIN="https://app.example.com,https://other.example.com" (or "*" to allow all).
+const extraOrigins = (process.env.CORS_ORIGIN || "")
+  .split(",")
+  .map((o) => o.trim().replace(/\/+$/, ""))
+  .filter(Boolean);
+const allowedOriginPatterns = [/^https:\/\/[a-z0-9-]+\.vercel\.app$/i, /^http:\/\/localhost:\d+$/i];
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || extraOrigins.includes("*")) return callback(null, true);
+      const allowed = extraOrigins.includes(origin) || allowedOriginPatterns.some((p) => p.test(origin));
+      callback(null, allowed);
+    },
+  })
+);
 app.use(express.json());
 
 const db = openDb();
@@ -26,6 +41,11 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin1234";
 const STAFF_PASSWORD = process.env.STAFF_PASSWORD || "staff1234";
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "admin-token";
 const STAFF_TOKEN = process.env.STAFF_TOKEN || "staff-token";
+
+console.log(
+  `[auth] admin password: ${process.env.ADMIN_PASSWORD ? "from ADMIN_PASSWORD" : "DEFAULT (admin1234)"}, ` +
+    `staff password: ${process.env.STAFF_PASSWORD ? "from STAFF_PASSWORD" : "DEFAULT (staff1234)"}`
+);
 
 if (process.env.AUTO_SEED !== "false") {
   ensureSeed();

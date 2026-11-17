@@ -14,7 +14,11 @@ export default function LoginPage() {
   const handleLogin = async () => {
     setLoading(true); setError('');
     try { const result = await api.auth.login(role, password); saveAuth(result.token, result.role); router.replace(next); }
-    catch { setError('Login failed. Please check the password and try again.'); }
+    catch (err: any) {
+      setError(err?.status === 401
+        ? 'Wrong password for the selected role.'
+        : 'Cannot reach the server. It may be waking up (can take ~1 minute) — please try again shortly.');
+    }
     finally { setLoading(false); }
   };
 

@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://clinic-queue-management-1-m8e8.onrender.com';
+import { API_URL } from './config';
 
 function getAuthToken() {
   if (typeof window === 'undefined') return null;
@@ -18,7 +18,7 @@ export async function fetchAPI(endpoint: string, options: RequestInit = {}) {
   });
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    throw Object.assign(new Error(`API Error: ${response.status} ${response.statusText}`), { status: response.status });
   }
 
   return response.json();

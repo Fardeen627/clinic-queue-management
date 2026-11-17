@@ -1,4 +1,5 @@
 import { useAuth, clearAuth } from '@/lib/auth';
+import { DISPLAY_URL } from '@/lib/config';
 
 const sections = [
   ['Reception', 'Register patients and manage waiting or on-hold tickets.', '/desk', 'Open reception'],
@@ -14,6 +15,6 @@ export default function Home() {
       {auth ? <div className="flex items-center gap-3"><span className="rounded-full bg-teal-50 px-3 py-1 text-sm text-teal-800">Signed in as {auth.role}</span><button onClick={() => { clearAuth(); window.location.reload(); }} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium">Sign out</button></div> : <a className="rounded-lg bg-teal-600 px-4 py-2 font-semibold text-white" href="/login">Sign in</a>}
     </header>
     <div className="grid gap-5 md:grid-cols-3">{sections.map(([title, description, href, label], index) => <section key={href} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div className="mb-6 flex h-10 w-10 items-center justify-center rounded-lg bg-teal-50 font-bold text-teal-700">0{index + 1}</div><h2 className="text-xl font-bold">{title}</h2><p className="mt-2 min-h-12 text-sm leading-6 text-slate-500">{description}</p><a className="mt-6 inline-block rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white" href={href}>{label}</a></section>)}</div>
-    <section className="mt-5 rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600"><span className="font-semibold text-slate-800">Waiting-room display:</span> open <code className="rounded bg-slate-100 px-1.5 py-0.5">http://localhost:3001</code> and select a room.</section>
+    <section className="mt-5 rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600"><span className="font-semibold text-slate-800">Waiting-room display:</span> open <a href={DISPLAY_URL} target="_blank" rel="noreferrer" className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-teal-700 underline">{DISPLAY_URL}</a> and select a room.</section>
   </div></main>;
 }

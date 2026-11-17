@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
+import { API_URL } from '@/lib/config';
 import { useRequireRole } from '@/lib/auth';
 
 export default function AdminPage() {
@@ -318,7 +319,7 @@ export default function AdminPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">API URL</span>
-                <span className="font-mono text-sm">{process.env.NEXT_PUBLIC_API_URL}</span>
+                <span className="font-mono text-sm">{API_URL}</span>
               </div>
             </div>
           </div>

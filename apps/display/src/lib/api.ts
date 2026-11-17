@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://clinic-queue-management-1-m8e8.onrender.com';
+import { API_URL } from './config';
 
 export async function fetchAPI(endpoint: string, options: RequestInit = {}) {
   const url = `${API_URL}/api${endpoint}`;
